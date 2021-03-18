@@ -1,62 +1,49 @@
 import { Controller } from 'egg';
-
-const TR_Rule = {
-  customer_id: 'string',
-  begin_date: 'string',
-  end_date: 'string',
-  platform: {
-    type: 'string',
-    required: false,
-  },
-  item_id: {
-    type: 'string',
-    required: false,
-  },
-  metric_type: {
-    type: 'string',
-    required: false,
-  },
-  data_type: {
-    type: 'string',
-    required: false,
-  },
-  section_type: {
-    type: 'string',
-    required: false,
-  },
-  yop: {
-    type: 'string',
-    required: false,
-  },
-  access_type: {
-    type: 'string',
-    required: false,
-  },
-  access_method: {
-    type: 'string',
-    required: false,
-  },
-  attributes_to_show: {
-    type: 'string',
-    required: false,
-  },
-  granularity: {
-    type: 'string',
-    required: false,
-  },
-};
-
-const TR_B1_Rule = {
-  customer_id: 'string',
-  platform: {
-    type: 'string',
-    required: false,
-  },
-  begin_date: 'string',
-  end_date: 'string',
-};
+import { PR_Rule, PR_P1_Rule, TR_Rule, TR_B1_Rule, TR_B2_Rule, TR_B3_Rule, IR_Rule } from './type';
 
 export default class CounterController extends Controller {
+  async getReportsPR() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(PR_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.platformReport.pr(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getReportsPR1() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(PR_P1_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.platformReport.pr_p1(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
   async getReportsTR() {
     const { ctx } = this;
     const query = ctx.query;
@@ -103,7 +90,7 @@ export default class CounterController extends Controller {
     const { ctx } = this;
     const query = ctx.query;
     try {
-      ctx.validate(TR_B1_Rule, query);
+      ctx.validate(TR_B2_Rule, query);
     } catch (err) {
       ctx.body = {
         code: 500,
@@ -124,7 +111,7 @@ export default class CounterController extends Controller {
     const { ctx } = this;
     const query = ctx.query;
     try {
-      ctx.validate(TR_B1_Rule, query);
+      ctx.validate(TR_B3_Rule, query);
     } catch (err) {
       ctx.body = {
         code: 500,
@@ -140,6 +127,31 @@ export default class CounterController extends Controller {
       data: report,
     };
   }
+
+  async getReportsIR() {
+    const { ctx } = this;
+    const query = ctx.query;
+    query.include_parent_details = query.include_parent_details || '0';
+    query.include_component_details = query.include_component_details || '0';
+
+    try {
+      ctx.validate(IR_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.itemReport.ir(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
   //   async getAPIStatus() {
   //     const customer_id = req.swagger.params.customer_id.value;
   //     const platform = req.swagger.params.platform.value;
@@ -225,30 +237,6 @@ export default class CounterController extends Controller {
   //       });
   //   }
 
-  //   async getReportsIR() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     const item_id = req.swagger.params.item_id.value;
-  //     const item_contributor = req.swagger.params.item_contributor.value;
-  //     const metric_type = req.swagger.params.metric_type.value;
-  //     const data_type = req.swagger.params.data_type.value;
-  //     const yop = req.swagger.params.yop.value;
-  //     const access_type = req.swagger.params.access_type.value;
-  //     const access_method = req.swagger.params.access_method.value;
-  //     const attributes_to_show = req.swagger.params.attributes_to_show.value;
-  //     const include_component_details = req.swagger.params.include_component_details.value;
-  //     const include_parent_details = req.swagger.params.include_parent_details.value;
-  //     const granularity = req.swagger.params.granularity.value;
-  //     Default.getReportsIR(customer_id, begin_date, end_date, platform, item_id, item_contributor, metric_type, data_type, yop, access_type, access_method, attributes_to_show, include_component_details, include_parent_details, granularity)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
 
   //   async getReportsIRA1() {
   //     const customer_id = req.swagger.params.customer_id.value;
@@ -270,39 +258,6 @@ export default class CounterController extends Controller {
   //     const end_date = req.swagger.params.end_date.value;
   //     const platform = req.swagger.params.platform.value;
   //     Default.getReportsIRM1(customer_id, begin_date, end_date, platform)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getReportsPR() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     const metric_type = req.swagger.params.metric_type.value;
-  //     const data_type = req.swagger.params.data_type.value;
-  //     const access_method = req.swagger.params.access_method.value;
-  //     const attributes_to_show = req.swagger.params.attributes_to_show.value;
-  //     const granularity = req.swagger.params.granularity.value;
-  //     Default.getReportsPR(customer_id, begin_date, end_date, platform, metric_type, data_type, access_method, attributes_to_show, granularity)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getReportsPR1() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     Default.getReportsPR1(customer_id, begin_date, end_date, platform)
   //       .then(function(response) {
   //         utils.writeJson(res, response);
   //       })
