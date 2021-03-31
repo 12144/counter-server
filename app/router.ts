@@ -4,11 +4,14 @@ export default (app: Application) => {
   const { controller, router } = app;
 
   router.get('/', controller.home.index);
-  router.get('/report/pr', controller.counter.getReportsPR);
-  router.get('/report/pr_p1', controller.counter.getReportsPR1);
-  router.get('/report/tr', controller.counter.getReportsTR);
-  router.get('/report/tr_b1', controller.counter.getReportsTRB1);
-  router.get('/report/tr_b2', controller.counter.getReportsTRB2);
-  router.get('/report/tr_b3', controller.counter.getReportsTRB3);
-  router.get('/report/ir', controller.counter.getReportsIR);
+  router.get('/status', controller.counter.getAPIStatus);
+  router.get('/member', controller.counter.getConsortiumMembers);
+  router.get('/reports', controller.counter.getReports);
+  router.get('/reports/pr', controller.counter.getReportsPR);
+  router.get('/reports/pr_p1', controller.counter.getReportsPR1);
+  router.get('/reports/tr', controller.counter.getReportsTR);
+  router.get('/reports/tr_b1', controller.counter.getReportsTRB1);
+  router.get('/reports/tr_b2', controller.counter.getReportsTRB2);
+  router.get('/reports/tr_b3', controller.counter.getReportsTRB3);
+  router.get('/reports/ir', controller.counter.getReportsIR);
 };

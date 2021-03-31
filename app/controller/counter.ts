@@ -1,7 +1,70 @@
 import { Controller } from 'egg';
-import { PR_Rule, PR_P1_Rule, TR_Rule, TR_B1_Rule, TR_B2_Rule, TR_B3_Rule, IR_Rule } from './type';
+import { Member_Rule, Reports_Rule, Status_Rule, PR_Rule, PR_P1_Rule, TR_Rule, TR_B1_Rule, TR_B2_Rule, TR_B3_Rule, IR_Rule } from './type';
 
 export default class CounterController extends Controller {
+  async getAPIStatus() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(Status_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.status.index(query);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getConsortiumMembers() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(Member_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.member.index(query);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getReports() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(Reports_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.reports.index(query);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
   async getReportsPR() {
     const { ctx } = this;
     const query = ctx.query;
@@ -151,43 +214,6 @@ export default class CounterController extends Controller {
       data: report,
     };
   }
-
-  //   async getAPIStatus() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     Default.getAPIStatus(customer_id, platform)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getConsortiumMembers() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     Default.getConsortiumMembers(customer_id, platform)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getReports() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     const search = req.swagger.params.search.value;
-  //     Default.getReports(customer_id, platform, search)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
 
   //   async getReportsDR() {
   //     const customer_id = req.swagger.params.customer_id.value;

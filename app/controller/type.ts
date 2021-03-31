@@ -1,3 +1,31 @@
+export const Status_Rule = {
+  customer_id: 'string',
+  platform: {
+    type: 'string',
+    required: false,
+  },
+};
+
+export const Member_Rule = {
+  customer_id: 'string',
+  platform: {
+    type: 'string',
+    required: false,
+  },
+};
+
+export const Reports_Rule = {
+  customer_id: 'string',
+  platform: {
+    type: 'string',
+    required: false,
+  },
+  search: {
+    type: 'string',
+    required: false,
+  },
+};
+
 export const PR_Rule = {
   customer_id: 'string',
   platform: {

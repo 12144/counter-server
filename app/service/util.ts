@@ -106,7 +106,7 @@ const getFormattedItem = {
 
     item.platform && (formattedItem.Platform = item.platform);
     item.publisher && (formattedItem.Publisher = item.publisher);
-    item.publisher_id && (formattedItem.Publisher_ID = item.publisher_id);
+    item.publisher_id && (formattedItem.Publisher_ID = formatValue.Publisher_ID(item.publisher_id));
     item.authors && (formattedItem.Item_Contributors = formatValue.Item_Contributors(item.authors));
     item.publication_date && (formattedItem.Item_Dates = formatValue.Publication_Date(item.publication_date));
     item.article_version && (formattedItem.Item_Attributes = formatValue.Article_Version(item.article_version));
