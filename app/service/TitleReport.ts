@@ -1,6 +1,20 @@
 import { Service } from 'egg';
-import { Granularity, NameValue, ReportHeader, ReportFilters, MetricType, TitleReportID, ReportID, AttributesToShow, ReportAttributes } from './type';
-import { formatReportItems, parseAttributesToShow, parseItemID } from './util';
+import {
+  Granularity,
+  NameValue,
+  ReportHeader,
+  ReportFilters,
+  MetricType,
+  TitleReportID,
+  ReportID,
+  AttributesToShow,
+  ReportAttributes,
+} from './type';
+import {
+  formatReportItems,
+  parseAttributesToShow,
+  parseItemID,
+} from './util';
 
 export type TitleReportOption = {
   customer_id: string;
@@ -26,40 +40,39 @@ const ReportName = {
 };
 
 export default class TitleReport extends Service {
-  // 获取TR
   public async tr(option: TitleReportOption) {
     const reportHeader = this.getReportHeader(option, TitleReportID.TR);
     const reportItems = await this.getReportItems(option, TitleReportID.TR);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.TR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.TR),
     };
   }
-  //   获取TR_B1
+
   public async tr_b1(option: TitleReportOption) {
     const reportHeader = this.getReportHeader(option, TitleReportID.TR_B1);
     const reportItems = await this.getReportItems(option, TitleReportID.TR_B1);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.TR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.TR),
     };
   }
-  //   获取TR_B2
+
   public async tr_b2(option: TitleReportOption) {
     const reportHeader = this.getReportHeader(option, TitleReportID.TR_B2);
     const reportItems = await this.getReportItems(option, TitleReportID.TR_B2);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.TR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.TR),
     };
   }
-  //   获取TR_B3
+
   public async tr_b3(option: TitleReportOption) {
     const reportHeader = this.getReportHeader(option, TitleReportID.TR_B3);
     const reportItems = await this.getReportItems(option, TitleReportID.TR_B3);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.TR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.TR),
     };
   }
   // 获取报告头
@@ -254,7 +267,7 @@ export default class TitleReport extends Service {
     ${option.access_method ? `and access_method = '${option.access_method}'` : ''}
     ${item_ids.map(item => `and ${item.Type} = '${item.Value}'`).join('\n')}
     `;
-    console.log(query);
+
     const result = await mysql.query(query);
     return result;
   }

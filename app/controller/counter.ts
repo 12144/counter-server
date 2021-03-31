@@ -1,10 +1,22 @@
 import { Controller } from 'egg';
-import { Member_Rule, Reports_Rule, Status_Rule, PR_Rule, PR_P1_Rule, TR_Rule, TR_B1_Rule, TR_B2_Rule, TR_B3_Rule, IR_Rule } from './type';
+import {
+  Member_Rule,
+  Reports_Rule,
+  Status_Rule,
+  PR_Rule,
+  PR_P1_Rule,
+  TR_Rule,
+  TR_B1_Rule,
+  TR_B2_Rule,
+  TR_B3_Rule,
+  IR_Rule,
+} from './type';
 
 export default class CounterController extends Controller {
   async getAPIStatus() {
     const { ctx } = this;
     const query = ctx.query;
+    console.log('1');
     try {
       ctx.validate(Status_Rule, query);
     } catch (err) {

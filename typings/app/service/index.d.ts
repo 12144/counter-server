@@ -11,7 +11,6 @@ import ExportMember from '../../../app/service/Member';
 import ExportPlatformReport from '../../../app/service/PlatformReport';
 import ExportReports from '../../../app/service/Reports';
 import ExportStatus from '../../../app/service/Status';
-import ExportTest from '../../../app/service/Test';
 import ExportTitleReport from '../../../app/service/TitleReport';
 import ExportType from '../../../app/service/type';
 import ExportUtil from '../../../app/service/util';
@@ -23,7 +22,6 @@ declare module 'egg' {
     platformReport: AutoInstanceType<typeof ExportPlatformReport>;
     reports: AutoInstanceType<typeof ExportReports>;
     status: AutoInstanceType<typeof ExportStatus>;
-    test: AutoInstanceType<typeof ExportTest>;
     titleReport: AutoInstanceType<typeof ExportTitleReport>;
     type: AutoInstanceType<typeof ExportType>;
     util: AutoInstanceType<typeof ExportUtil>;

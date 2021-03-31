@@ -30,7 +30,6 @@ export default class ItemReport extends Service {
         Alert: item.alert,
       });
     }
-
     return Array.from(basicMap.values());
   }
 }

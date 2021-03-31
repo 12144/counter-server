@@ -1,3 +1,4 @@
+// 各个接口支持的参数，用于参数校验
 export const Status_Rule = {
   customer_id: 'string',
   platform: {
@@ -111,7 +112,7 @@ export const TR_Rule = {
     required: false,
   },
 };
-  // TR_B1, TR_B2, TR_B3的规则是相同的
+// TR_B1, TR_B2, TR_B3的规则是相同的
 export const TR_B1_Rule = {
   customer_id: 'string',
   platform: {
@@ -178,4 +179,3 @@ export const IR_Rule = {
     required: false,
   },
 };
-

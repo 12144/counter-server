@@ -35,7 +35,7 @@ export default class PlatformReport extends Service {
     const reportItems = await this.getReportItems(option, PlatformReportID.PR);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.PR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.PR),
     };
   }
 
@@ -45,7 +45,7 @@ export default class PlatformReport extends Service {
     const reportItems = await this.getReportItems(option, PlatformReportID.PR_P1);
     return {
       Report_Header: reportHeader,
-      Report_Items: formatReportItems(reportItems, option, ReportID.PR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.PR),
     };
   }
 
@@ -145,7 +145,7 @@ export default class PlatformReport extends Service {
       MetricType.Unique_Title_Requests,
       MetricType.No_License,
       MetricType.Limit_Exceeded,
-    ]);
+    ]).map(str => str.toLocaleLowerCase());
 
     const columns = [ 'id', 'platform' ].concat(attributes_to_show_arr).concat(metric_type_arr);
     if (granularity === Granularity.MONTH) { columns.push('month'); }

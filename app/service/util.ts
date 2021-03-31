@@ -1,4 +1,12 @@
-import { AttributesToShow, Item_ID_Fields, Item_ID_Map, Metric_Type_Fields, Metric_Type_Map, ReportID, TypeValue } from './type';
+import {
+  AttributesToShow,
+  Item_ID_Fields,
+  Item_ID_Map,
+  Metric_Type_Fields,
+  Metric_Type_Map,
+  ReportID,
+  TypeValue,
+} from './type';
 
 export function parseItemID(str: string): TypeValue[] {
   if (!str) return [];
@@ -206,5 +214,6 @@ export async function formatReportItems(items: any[], option: any, reportID: Rep
   if (reportID === ReportID.IR && option.include_component_details) {
     return await getFormattedItem.addParentOrComponentDetail(itemMap, relationMap, option, mysql);
   }
+
   return Array.from(itemMap.values()).filter(item => item.Performance.length);
 }

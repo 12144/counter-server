@@ -9,7 +9,10 @@ import {
   MetricType,
   ReportID,
 } from './type';
-import { formatReportItems, parseAttributesToShow } from './util';
+import {
+  formatReportItems,
+  parseAttributesToShow,
+} from './util';
 
 export type ItemReportOption = {
   customer_id: string;
