@@ -9,7 +9,7 @@ import {
   PlatformReportID,
   ReportID,
 } from './type';
-import { formatReportItems } from './util';
+import { formatReportItems, parseAttributesToShow } from './util';
 
 export type PlatformReportOption = {
   customer_id: string;
@@ -135,7 +135,7 @@ export default class PlatformReport extends Service {
   async getPRReportItems(option:PlatformReportOption) {
     const mysql = this.app.mysql;
     const granularity = option.granularity || 'Month';
-    const attributes_to_show_arr = (option.attributes_to_show ? option.attributes_to_show.split('|') : []).map(str => str.toLocaleLowerCase());
+    const attributes_to_show_arr = parseAttributesToShow(option.attributes_to_show!, ReportID.PR);
     const metric_type_arr = (option.metric_type ? option.metric_type.split('|') : [
       MetricType.Total_Item_Investigations,
       MetricType.Unique_Item_Investigations,
@@ -154,7 +154,10 @@ export default class PlatformReport extends Service {
     select
     ${columns.join(',')}
     from Counter.Platform, ${granularity === Granularity.MONTH ?
-    'Counter.Platform_Metric' :
+    `(
+      select * from Counter.Platform_Metric
+      where month >= '${option.begin_date}' and month < '${option.end_date}'
+    ) as P` :
     `(
         select
         platform_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
@@ -164,11 +167,12 @@ export default class PlatformReport extends Service {
     ) as P`
 }
     where
-    Counter.Platform.id = ${granularity === Granularity.MONTH ? 'Counter.Platform_Metric' : 'P'}.platform_id
+    Counter.Platform.id = P.platform_id
     ${option.platform ? `and platform = '${option.platform}'` : ''}
     ${option.data_type ? `and data_type = '${option.data_type}'` : ''}
     ${option.access_method ? `and access_method = '${option.access_method}'` : ''}
     `;
+
     const result = await mysql.query(query);
     return result;
   }

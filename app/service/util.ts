@@ -8,6 +8,29 @@ import {
   TypeValue,
 } from './type';
 
+const PRAttrs = new Set([
+  AttributesToShow.data_type,
+  AttributesToShow.access_method,
+]);
+
+const TRAttrs = new Set([
+  AttributesToShow.data_type,
+  AttributesToShow.section_type,
+  AttributesToShow.yop,
+  AttributesToShow.access_type,
+  AttributesToShow.access_method,
+]);
+
+const IRAttrs = new Set([
+  AttributesToShow.authors,
+  AttributesToShow.publication_date,
+  AttributesToShow.article_version,
+  AttributesToShow.data_type,
+  AttributesToShow.yop,
+  AttributesToShow.access_type,
+  AttributesToShow.access_method,
+]);
+
 export function parseItemID(str: string): TypeValue[] {
   if (!str) return [];
   return str.split('|').map(item => {
@@ -19,22 +42,19 @@ export function parseItemID(str: string): TypeValue[] {
   });
 }
 
-const TRAttrs = new Set([
-  AttributesToShow.data_type,
-  AttributesToShow.section_type,
-  AttributesToShow.yop,
-  AttributesToShow.access_type,
-  AttributesToShow.access_method,
-]);
-
+// 根据attributes_to_show的值，返回一个数组，元素是attributes_to_show指定的列
 export function parseAttributesToShow(str: string, reportID: ReportID, exclude?: string[]): string[] {
   if (!str) return [];
   const excludeAttrs = new Set(exclude || []);
   //   todo根据不同的报告筛选其所需的列
   const attrs = str.split('|').map(item => item.toLocaleLowerCase());
   switch (reportID) {
+    case ReportID.PR:
+      return attrs.filter(attr => PRAttrs.has(attr));
     case ReportID.TR:
       return attrs.filter(attr => TRAttrs.has(attr) && !excludeAttrs.has(attr));
+    case ReportID.IR:
+      return attrs.filter(attr => IRAttrs.has(attr));
     default: return [];
   }
 }
@@ -78,10 +98,8 @@ const formatValue = {
 
 const getFormattedItem = {
   [ReportID.PR](item: any) {
-    const formattedItem: any = {
-      Platform: item.platform,
-    };
-
+    const formattedItem: any = { };
+    item.platform && (formattedItem.Platform = item.platform);
     item.data_type && (formattedItem.Data_Type = item.data_type);
     item.access_method && (formattedItem.Access_Method = item.access_method);
     formattedItem.Performance = [];
@@ -89,14 +107,13 @@ const getFormattedItem = {
   },
 
   [ReportID.TR](item: any) {
-    const formattedItem: any = {
-      Title: item.title,
-      Item_ID: formatValue.Item_ID(item),
-      Platform: item.platform,
-      Publisher: item.publisher,
-      Publisher_ID: formatValue.Publisher_ID(item.publisher_id),
-    };
+    const formattedItem: any = { };
 
+    item.title && (formattedItem.Title = item.title);
+    formattedItem.Item_ID = formatValue.Item_ID(item);
+    item.platform && (formattedItem.Platform = item.platform);
+    item.publisher && (formattedItem.Publisher = item.publisher);
+    item.publisher_id && (formattedItem.Publisher_ID = item.publisher_id);
     item.data_type && (formattedItem.Data_Type = item.data_type);
     item.section_type && (formattedItem.Section_Type = item.section_type);
     item.yop && (formattedItem.YOP = item.yop);
@@ -106,12 +123,11 @@ const getFormattedItem = {
     return formattedItem;
   },
 
-  [ReportID.IR](item: any) {
-    const formattedItem: any = {
-      Item: item.item,
-      Item_ID: formatValue.Item_ID(item),
-    };
+  [ReportID.IR](item: any, option?: any) {
+    const formattedItem: any = { };
 
+    item.item && (formattedItem.Item = item.item);
+    formattedItem.Item_ID = formatValue.Item_ID(item);
     item.platform && (formattedItem.Platform = item.platform);
     item.publisher && (formattedItem.Publisher = item.publisher);
     item.publisher_id && (formattedItem.Publisher_ID = formatValue.Publisher_ID(item.publisher_id));
@@ -119,8 +135,8 @@ const getFormattedItem = {
     item.publication_date && (formattedItem.Item_Dates = formatValue.Publication_Date(item.publication_date));
     item.article_version && (formattedItem.Item_Attributes = formatValue.Article_Version(item.article_version));
 
-    formattedItem.Item_Parent = item.parent_id;
-    formattedItem.Item_Component = null;
+    option && option.include_parent_details && (formattedItem.Item_Parent = item.parent_id);
+    option && option.include_component_details && (formattedItem.Item_Component = null);
     formattedItem.Performance = [];
     return formattedItem;
   },
@@ -211,7 +227,7 @@ export async function formatReportItems(items: any[], option: any, reportID: Rep
     }
   });
 
-  if (reportID === ReportID.IR && option.include_component_details) {
+  if (reportID === ReportID.IR && (option.include_component_details || option.include_parent_details)) {
     return await getFormattedItem.addParentOrComponentDetail(itemMap, relationMap, option, mysql);
   }
 

@@ -248,17 +248,20 @@ export default class TitleReport extends Service {
     select
     ${columns.join(',')}
     from Counter.Item, ${granularity === Granularity.MONTH ?
-    'Counter.Item_Metric' :
     `(
-        select
-        item_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
-        from Counter.Item_Metric
-        where month >= '${option.begin_date}' and month < '${option.end_date}'
-        group by item_id, access_method
-      ) as I`
+      select * from Counter.Item_Metric
+      where month >= '${option.begin_date}' and month < '${option.end_date}'
+    ) as I` :
+    `(
+      select
+      item_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
+      from Counter.Item_Metric
+      where month >= '${option.begin_date}' and month < '${option.end_date}'
+      group by item_id, access_method
+    ) as I`
 }
     where
-    Counter.Item.id = ${granularity === Granularity.MONTH ? 'Counter.Item_Metric' : 'I'}.item_id
+    Counter.Item.id = I.item_id
     ${option.platform ? `and platform = '${option.platform}'` : ''}
     ${option.data_type ? `and data_type = '${option.data_type}'` : ''}
     ${option.section_type ? `and section_type = '${option.section_type}'` : ''}
@@ -291,17 +294,20 @@ export default class TitleReport extends Service {
     select
     ${columns.join(',')}
     from Counter.Title, ${granularity === Granularity.MONTH ?
-    'Counter.Title_Metric' :
+    `( 
+      select * from Counter.Title_Metric
+      where  month >= '${option.begin_date}' and month < '${option.end_date}'
+    ) as T` :
     `(
-        select
-        title_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
-        from Counter.Title_Metric
-        where  month >= '${option.begin_date}' and month < '${option.end_date}'
-        group by title_id, access_method
-      ) as T`
+      select
+      title_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
+      from Counter.Title_Metric
+      where  month >= '${option.begin_date}' and month < '${option.end_date}'
+      group by title_id, access_method
+    ) as T`
 }
     where
-    Counter.Title.id = ${granularity === Granularity.MONTH ? 'Counter.Title_Metric' : 'T'}.title_id
+    Counter.Title.id = T.title_id
     ${option.platform ? `and platform = '${option.platform}'` : ''}
     ${option.data_type ? `and data_type = '${option.data_type}'` : ''}
     ${option.yop ? `and yop = '${option.yop}'` : ''}

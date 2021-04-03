@@ -184,7 +184,8 @@ export default class ItemReport extends Service {
     inner join ${granularity === Granularity.MONTH ?
     `
       Counter.Item_Metric
-      on Counter.Item.id = Counter.Item_Metric.item_id 
+      on Counter.Item.id = Counter.Item_Metric.item_id
+      and Counter.Item_Metric.month >= '${option.begin_date}' and Counter.Item_Metric.month < '${option.end_date}'
     ` :
     `
       (
