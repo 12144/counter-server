@@ -7,17 +7,6 @@ export default (appInfo: EggAppInfo) => {
         enable: false,
       },
     },
-    cors: {
-      credentials: true,
-      origin: 'http://localhost:3000',
-      allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTION',
-    },
-    cluster: {
-      listen: {
-        port: 7002,
-        hostname: '127.0.0.1',
-      },
-    },
   };
 
   // override config from framework / plugin
