@@ -5,6 +5,12 @@ export enum PlatformReportID {
   PR_P1 = 'PR_P1',
 }
 
+export enum DatabaseReportID {
+  DR = 'DR',
+  DR_D1 = 'DR_D1',
+  DR_D2 = 'DR_D2'
+}
+
 export enum TitleReportID {
   TR = 'TR',
   TR_B1 = 'TR_B1',
@@ -21,6 +27,9 @@ export enum ItemReportID {
 export enum ReportID {
   PR = 'PR',
   PR_P1 = 'PR_P1',
+  DR = 'DR',
+  DR_D1 = 'DR_D1',
+  DR_D2 = 'DR_D2',
   TR = 'TR',
   TR_B1 = 'TR_B1',
   TR_B2 = 'TR_B2',
@@ -67,7 +76,7 @@ export enum ReportFilters {
   Access_Type = 'Access_Type',
   Begin_Date = 'Begin_Date',
   End_Date = 'End_Date',
-  // Database = 'Database',
+  Database = 'Database',
   Data_Type = 'Data_Type',
   Item_Contributor = 'Item_Contributor',
   Item_ID = 'Item_ID',

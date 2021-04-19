@@ -6,16 +6,17 @@ import {
   ReportAttributes,
   ReportFilters,
   ReportHeader,
-  PlatformReportID,
+  DatabaseReportID,
   ReportID,
 } from './type';
 import { formatReportItems, parseAttributesToShow } from './util';
 
-export type PlatformReportOption = {
+export type DatabaseReportOption = {
   customer_id: string;
   begin_date: string;
   end_date: string;
   platform?: string;
+  database?: string;
   metric_type?: string;
   data_type?: string;
   access_method?: string;
@@ -24,33 +25,44 @@ export type PlatformReportOption = {
 };
 
 const ReportName = {
-  PR: 'Platform Master Report',
-  PR_P1: 'Platform Usage',
+  DR: 'Database Master Report',
+  DR_D1: 'Database Search and Item Usage',
+  DR_D2: 'Database Access Denied',
 };
 
-export default class PlatformReport extends Service {
-  // 获取pr
-  public async pr(option: PlatformReportOption) {
-    const reportHeader = this.getReportHeader(option, PlatformReportID.PR);
-    const reportItems = await this.getReportItems(option, PlatformReportID.PR);
+export default class DatabaseReport extends Service {
+  // 获取dr
+  public async dr(option: DatabaseReportOption) {
+    const reportHeader = this.getReportHeader(option, DatabaseReportID.DR);
+    const reportItems = await this.getReportItems(option, DatabaseReportID.DR);
     return {
       Report_Header: reportHeader,
-      Report_Items: await formatReportItems(reportItems, option, ReportID.PR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.DR),
     };
   }
 
-  // 获取pr_p1
-  public async pr_p1(option: PlatformReportOption) {
-    const reportHeader = this.getReportHeader(option, PlatformReportID.PR_P1);
-    const reportItems = await this.getReportItems(option, PlatformReportID.PR_P1);
+  // 获取dr_d1
+  public async dr_d1(option: DatabaseReportOption) {
+    const reportHeader = this.getReportHeader(option, DatabaseReportID.DR_D1);
+    const reportItems = await this.getReportItems(option, DatabaseReportID.DR_D1);
     return {
       Report_Header: reportHeader,
-      Report_Items: await formatReportItems(reportItems, option, ReportID.PR),
+      Report_Items: await formatReportItems(reportItems, option, ReportID.DR),
+    };
+  }
+
+  // 获取dr_d2
+  public async dr_d2(option: DatabaseReportOption) {
+    const reportHeader = this.getReportHeader(option, DatabaseReportID.DR_D2);
+    const reportItems = await this.getReportItems(option, DatabaseReportID.DR_D2);
+    return {
+      Report_Header: reportHeader,
+      Report_Items: await formatReportItems(reportItems, option, ReportID.DR),
     };
   }
 
   //   获取报告头
-  getReportHeader(option: PlatformReportOption, reportID: PlatformReportID) {
+  getReportHeader(option: DatabaseReportOption, reportID: DatabaseReportID) {
     const now = new Date();
     const reportHeader:ReportHeader = {
       Created: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}T${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}Z`,
@@ -81,7 +93,7 @@ export default class PlatformReport extends Service {
       Value: option.platform,
     });
 
-    if (reportID === PlatformReportID.PR) {
+    if (reportID === DatabaseReportID.DR) {
       Report_Filters.push({
         Name: ReportFilters.Metric_Type,
         Value: option.metric_type || 'all',
@@ -96,21 +108,35 @@ export default class PlatformReport extends Service {
         Name: ReportFilters.Access_Method,
         Value: option.access_method || 'all',
       });
+
+      Report_Filters.push({
+        Name: ReportFilters.Database,
+        Value: option.database || 'all',
+      });
     } else {
       Report_Filters.push({
         Name: ReportFilters.Access_Method,
         Value: 'Regular',
       });
 
-      Report_Filters.push({
-        Name: ReportFilters.Metric_Type,
-        Value: 'Unique_Item_Requests|Unique_Title_Requests',
-      });
+      if (reportID === DatabaseReportID.DR_D1) {
+        Report_Filters.push({
+          Name: ReportFilters.Metric_Type,
+          Value: 'Total_Item_Investigations|Total_Item_Requests',
+        });
+      }
+
+      if (reportID === DatabaseReportID.DR_D2) {
+        Report_Filters.push({
+          Name: ReportFilters.Metric_Type,
+          Value: 'Limit_Exceeded|No_License',
+        });
+      }
     }
     reportHeader.Report_Filters = Report_Filters;
 
     // 生成report_attributes
-    if (reportID === PlatformReportID.PR) {
+    if (reportID === DatabaseReportID.DR) {
       const Report_Attributes: NameValue[] = [];
 
       option.attributes_to_show && Report_Attributes.push({
@@ -130,17 +156,19 @@ export default class PlatformReport extends Service {
     return reportHeader;
   }
   // 获取报告项
-  async getReportItems(option: PlatformReportOption, reportID: PlatformReportID) {
-    if (reportID === PlatformReportID.PR) {
-      return await this.getPRReportItems(option);
+  async getReportItems(option: DatabaseReportOption, reportID: DatabaseReportID) {
+    if (reportID === DatabaseReportID.DR) {
+      return await this.getDRReportItems(option);
+    } else if (reportID === DatabaseReportID.DR_D1) {
+      return await this.getDRD1ReportItems(option);
     }
-    return await this.getPRP1ReportItems(option);
+    return await this.getDRD2ReportItems(option);
   }
 
-  async getPRReportItems(option:PlatformReportOption) {
+  async getDRReportItems(option:DatabaseReportOption) {
     const mysql = this.app.mysql;
     const granularity = option.granularity || 'Month';
-    const attributes_to_show_arr = parseAttributesToShow(option.attributes_to_show!, ReportID.PR);
+    const attributes_to_show_arr = parseAttributesToShow(option.attributes_to_show!, ReportID.DR);
     const metric_type_arr = (option.metric_type ? option.metric_type.split('|') : [
       MetricType.Total_Item_Investigations,
       MetricType.Unique_Item_Investigations,
@@ -152,48 +180,72 @@ export default class PlatformReport extends Service {
       MetricType.Limit_Exceeded,
     ]).map(str => str.toLocaleLowerCase());
 
-    const columns = [ 'id', 'platform' ].concat(attributes_to_show_arr).concat(metric_type_arr);
+    const columns = [ 'id', '`database`', 'platform', 'publisher', 'publisher_id' ].concat(attributes_to_show_arr).concat(metric_type_arr);
     if (granularity === Granularity.MONTH) { columns.push('month'); }
 
     const query = `
     select
     ${columns.join(',')}
-    from Counter.Platform, ${granularity === Granularity.MONTH ?
+    from Counter.\`Database\`, ${granularity === Granularity.MONTH ?
     `(
-      select * from Counter.Platform_Metric
+      select * from Counter.Database_Metric
       where month >= '${option.begin_date}' and month < '${option.end_date}'
-    ) as P` :
+    ) as D` :
     `(
         select
-        platform_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
-        from Counter.Platform_Metric
+        database_id, access_method, ${metric_type_arr.map(str => `sum(${str}) as ${str}`).join(',')}
+        from Counter.Database_Metric
         where month >= '${option.begin_date}' and month < '${option.end_date}'
-        group by platform_id, access_method
-    ) as P`
+        group by database_id, access_method
+    ) as D`
 }
     where
-    Counter.Platform.id = P.platform_id
+    Counter.\`Database\`.id = D.database_id
     ${option.platform ? `and platform = '${option.platform}'` : ''}
     ${option.data_type ? `and data_type = '${option.data_type}'` : ''}
     ${option.access_method ? `and access_method = '${option.access_method}'` : ''}
+    ${option.database ? `and \`database\` = '${option.database}'` : ''}
     `;
 
     const result = await mysql.query(query);
     return result;
   }
 
-  async getPRP1ReportItems(option:PlatformReportOption) {
+  async getDRD1ReportItems(option:DatabaseReportOption) {
     const mysql = this.app.mysql;
     const query = `
         select
         id,
+        \`database\`,
         platform,
+        publisher,
+        publisher_id,
         month,
         total_item_requests,
-        unique_item_requests,
-        unique_title_requests            
-        from Counter.Platform, Counter.Platform_Metric
-        where Counter.Platform.id = Counter.Platform_Metric.platform_id
+        total_item_investigations
+        from Counter.\`Database\`, Counter.Database_Metric
+        where Counter.\`Database\`.id = Counter.Database_Metric.database_id
+        and month >= '${option.begin_date}' and month < '${option.end_date}'
+        ${option.platform ? `and platform = '${option.platform}'` : ''}
+        `;
+    const result = await mysql.query(query);
+    return result;
+  }
+
+  async getDRD2ReportItems(option:DatabaseReportOption) {
+    const mysql = this.app.mysql;
+    const query = `
+        select
+        id,
+        \`database\`,
+        platform,
+        publisher,
+        publisher_id,
+        month,
+        limit_exceeded,
+        no_license
+        from Counter.\`Database\`, Counter.Database_Metric
+        where Counter.\`Database\`.id = Counter.Database_Metric.database_id
         and month >= '${option.begin_date}' and month < '${option.end_date}'
         ${option.platform ? `and platform = '${option.platform}'` : ''}
         `;

@@ -5,6 +5,9 @@ import {
   Status_Rule,
   PR_Rule,
   PR_P1_Rule,
+  DR_Rule,
+  DR_D1_Rule,
+  DR_D2_Rule,
   TR_Rule,
   TR_B1_Rule,
   TR_B2_Rule,
@@ -111,6 +114,69 @@ export default class CounterController extends Controller {
       return;
     }
     const report = await ctx.service.platformReport.pr_p1(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getReportsDR() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(DR_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.databaseReport.dr(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getReportsDR1() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(DR_D1_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.databaseReport.dr_d1(query as any);
+
+    ctx.body = {
+      code: 200,
+      message: 'ok!',
+      data: report,
+    };
+  }
+
+  async getReportsDR2() {
+    const { ctx } = this;
+    const query = ctx.query;
+    try {
+      ctx.validate(DR_D2_Rule, query);
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        message: err.errors,
+      };
+      return;
+    }
+    const report = await ctx.service.databaseReport.dr_d2(query as any);
 
     ctx.body = {
       code: 200,
@@ -226,54 +292,6 @@ export default class CounterController extends Controller {
       data: report,
     };
   }
-
-  //   async getReportsDR() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     const database = req.swagger.params.database.value;
-  //     const metric_type = req.swagger.params.metric_type.value;
-  //     const data_type = req.swagger.params.data_type.value;
-  //     const access_method = req.swagger.params.access_method.value;
-  //     const attributes_to_show = req.swagger.params.attributes_to_show.value;
-  //     const granularity = req.swagger.params.granularity.value;
-  //     Default.getReportsDR(customer_id, begin_date, end_date, platform, database, metric_type, data_type, access_method, attributes_to_show, granularity)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getReportsDR1() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     Default.getReportsDR1(customer_id, begin_date, end_date, platform)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
-
-  //   async getReportsDR2() {
-  //     const customer_id = req.swagger.params.customer_id.value;
-  //     const begin_date = req.swagger.params.begin_date.value;
-  //     const end_date = req.swagger.params.end_date.value;
-  //     const platform = req.swagger.params.platform.value;
-  //     Default.getReportsDR2(customer_id, begin_date, end_date, platform)
-  //       .then(function(response) {
-  //         utils.writeJson(res, response);
-  //       })
-  //       .catch(function(response) {
-  //         utils.writeJson(res, response);
-  //       });
-  //   }
 
 
   //   async getReportsIRA1() {

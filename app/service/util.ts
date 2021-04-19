@@ -21,6 +21,11 @@ const TRAttrs = new Set([
   AttributesToShow.access_method,
 ]);
 
+const DRAttrs = new Set([
+  AttributesToShow.data_type,
+  AttributesToShow.access_method,
+]);
+
 const IRAttrs = new Set([
   AttributesToShow.authors,
   AttributesToShow.publication_date,
@@ -51,6 +56,8 @@ export function parseAttributesToShow(str: string, reportID: ReportID, exclude?:
   switch (reportID) {
     case ReportID.PR:
       return attrs.filter(attr => PRAttrs.has(attr));
+    case ReportID.DR:
+      return attrs.filter(attr => DRAttrs.has(attr));
     case ReportID.TR:
       return attrs.filter(attr => TRAttrs.has(attr) && !excludeAttrs.has(attr));
     case ReportID.IR:
@@ -100,6 +107,20 @@ const getFormattedItem = {
   [ReportID.PR](item: any) {
     const formattedItem: any = { };
     item.platform && (formattedItem.Platform = item.platform);
+    item.data_type && (formattedItem.Data_Type = item.data_type);
+    item.access_method && (formattedItem.Access_Method = item.access_method);
+    formattedItem.Performance = [];
+    return formattedItem;
+  },
+
+  [ReportID.DR](item:any) {
+    const formattedItem: any = { };
+
+    item.database && (formattedItem.Database = item.database);
+    formattedItem.Item_ID = formatValue.Item_ID(item);
+    item.platform && (formattedItem.Platform = item.platform);
+    item.publisher && (formattedItem.Publisher = item.publisher);
+    item.publisher_id && (formattedItem.Publisher_ID = formatValue.Publisher_ID(item.publisher_id));
     item.data_type && (formattedItem.Data_Type = item.data_type);
     item.access_method && (formattedItem.Access_Method = item.access_method);
     formattedItem.Performance = [];

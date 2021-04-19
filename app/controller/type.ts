@@ -27,6 +27,17 @@ export const Reports_Rule = {
   },
 };
 
+const View_Rule = {
+  customer_id: 'string',
+  platform: {
+    type: 'string',
+    required: false,
+  },
+  begin_date: 'string',
+  end_date: 'string',
+};
+
+
 export const PR_Rule = {
   customer_id: 'string',
   platform: {
@@ -57,7 +68,9 @@ export const PR_Rule = {
   },
 };
 
-export const PR_P1_Rule = {
+export const PR_P1_Rule = View_Rule;
+
+export const DR_Rule = {
   customer_id: 'string',
   platform: {
     type: 'string',
@@ -65,7 +78,35 @@ export const PR_P1_Rule = {
   },
   begin_date: 'string',
   end_date: 'string',
+  database: {
+    type: 'string',
+    required: false,
+  },
+  metric_type: {
+    type: 'string',
+    required: false,
+  },
+  data_type: {
+    type: 'string',
+    required: false,
+  },
+  access_method: {
+    type: 'string',
+    required: false,
+  },
+  attributes_to_show: {
+    type: 'string',
+    required: false,
+  },
+  granularity: {
+    type: 'string',
+    required: false,
+  },
 };
+
+export const DR_D1_Rule = View_Rule;
+
+export const DR_D2_Rule = View_Rule;
 
 export const TR_Rule = {
   customer_id: 'string',
@@ -113,18 +154,9 @@ export const TR_Rule = {
   },
 };
 // TR_B1, TR_B2, TR_B3的规则是相同的
-export const TR_B1_Rule = {
-  customer_id: 'string',
-  platform: {
-    type: 'string',
-    required: false,
-  },
-  begin_date: 'string',
-  end_date: 'string',
-};
-
-export const TR_B2_Rule = TR_B1_Rule;
-export const TR_B3_Rule = TR_B1_Rule;
+export const TR_B1_Rule = View_Rule;
+export const TR_B2_Rule = View_Rule;
+export const TR_B3_Rule = View_Rule;
 
 export const IR_Rule = {
   customer_id: 'string',
