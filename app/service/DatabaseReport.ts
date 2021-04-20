@@ -178,6 +178,9 @@ export default class DatabaseReport extends Service {
       MetricType.Unique_Title_Requests,
       MetricType.No_License,
       MetricType.Limit_Exceeded,
+      MetricType.Searches_Regular,
+      MetricType.Searches_Automated,
+      MetricType.Searches_Federated,
     ]).map(str => str.toLocaleLowerCase());
 
     const columns = [ 'id', '`database`', 'platform', 'publisher', 'publisher_id' ].concat(attributes_to_show_arr).concat(metric_type_arr);
@@ -222,7 +225,10 @@ export default class DatabaseReport extends Service {
         publisher_id,
         month,
         total_item_requests,
-        total_item_investigations
+        total_item_investigations,
+        searches_automated,
+        searches_federated,
+        searches_regular
         from Counter.\`Database\`, Counter.Database_Metric
         where Counter.\`Database\`.id = Counter.Database_Metric.database_id
         and month >= '${option.begin_date}' and month < '${option.end_date}'

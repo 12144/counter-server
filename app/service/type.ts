@@ -107,7 +107,10 @@ export enum MetricType {
   Unique_Title_Requests = 'Unique_Title_Requests',
   No_License = 'No_License',
   Limit_Exceeded = 'Limit_Exceeded',
-  Searches_Platform = 'Searches_Platform'
+  Searches_Platform = 'Searches_Platform',
+  Searches_Regular = 'Searches_Regular',
+  Searches_Automated = 'Searches_Automated',
+  Searches_Federated = 'Searches_Federated'
 }
 
 export const Metric_Type_Fields = [
@@ -120,6 +123,9 @@ export const Metric_Type_Fields = [
   'no_license',
   'limit_exceeded',
   'searches_platform',
+  'searches_regular',
+  'searches_automated',
+  'searches_federated',
 ];
 
 export const Metric_Type_Map = {
@@ -132,6 +138,9 @@ export const Metric_Type_Map = {
   no_license: 'No_License',
   limit_exceeded: 'Limit_Exceeded',
   searches_platform: 'Searches_Platform',
+  searches_regular: 'Searches_Regular',
+  searches_automated: 'Searches_Automated',
+  searches_federated: 'Searches_Federated',
 };
 
 export const Item_ID_Fields = [
