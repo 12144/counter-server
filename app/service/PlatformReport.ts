@@ -104,7 +104,7 @@ export default class PlatformReport extends Service {
 
       Report_Filters.push({
         Name: ReportFilters.Metric_Type,
-        Value: 'Unique_Item_Requests|Unique_Title_Requests',
+        Value: 'Searches_Platform|Total_Item_Requests|Unique_Item_Requests|Unique_Title_Requests',
       });
     }
     reportHeader.Report_Filters = Report_Filters;
@@ -150,6 +150,7 @@ export default class PlatformReport extends Service {
       MetricType.Unique_Title_Requests,
       MetricType.No_License,
       MetricType.Limit_Exceeded,
+      MetricType.Searches_Platform,
     ]).map(str => str.toLocaleLowerCase());
 
     const columns = [ 'id', 'platform' ].concat(attributes_to_show_arr).concat(metric_type_arr);
@@ -189,6 +190,7 @@ export default class PlatformReport extends Service {
         id,
         platform,
         month,
+        searches_platform,
         total_item_requests,
         unique_item_requests,
         unique_title_requests            
