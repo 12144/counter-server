@@ -63,7 +63,7 @@ export default class ItemReport extends Service {
       Report_Name: ReportName[reportID],
     };
 
-    // 根据customer_id来生成created_by, institution_name, institution_id
+    // 根据实际情况而写
     reportHeader.Institution_Name = '';
     reportHeader.Institution_ID = [];
 
