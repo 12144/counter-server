@@ -171,3 +171,55 @@ export const AttributesToShow = {
   publication_date: 'publication_date',
   article_version: 'article_version',
 };
+
+export const Access_Type_Fields = [
+  'controlled',
+  'oa_gold',
+  'oa_delayed',
+  'other_free_to_read',
+];
+
+export const Section_Type_Fields = [
+  'article',
+  'book',
+  'chapter',
+  'other',
+  'section',
+];
+
+export const Data_Type_Fields = [
+  'article',
+  'book',
+  'book_segment',
+  'database',
+  'dataset',
+  'journal',
+  'multimedia',
+  'newspaper_or_newsletter',
+  'ohter',
+  'platform',
+  'report',
+  'repository_item',
+  'thesis_or_dissertation',
+];
+
+export const Access_Method_Fields = [
+  'regular',
+  'tdm',
+];
+
+export const Granularity_Fields = [
+  'month',
+  'total',
+];
+
+export const Attributes_To_Show_Fields = [
+  'data_type',
+  'access_method',
+  'section_type',
+  'yop',
+  'access_type',
+  'authors',
+  'publication_date',
+  'article_version',
+];

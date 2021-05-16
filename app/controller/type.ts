@@ -33,8 +33,8 @@ const View_Rule = {
     type: 'string',
     required: false,
   },
-  begin_date: 'string',
-  end_date: 'string',
+  begin_date: 'begin_date',
+  end_date: 'end_date',
 };
 
 
@@ -44,26 +44,26 @@ export const PR_Rule = {
     type: 'string',
     required: false,
   },
-  begin_date: 'string',
-  end_date: 'string',
+  begin_date: 'begin_date',
+  end_date: 'end_date',
   metric_type: {
-    type: 'string',
+    type: 'metric_type',
     required: false,
   },
   data_type: {
-    type: 'string',
+    type: 'data_type',
     required: false,
   },
   access_method: {
-    type: 'string',
+    type: 'access_method',
     required: false,
   },
   attributes_to_show: {
-    type: 'string',
+    type: 'attributes_to_show',
     required: false,
   },
   granularity: {
-    type: 'string',
+    type: 'granularity',
     required: false,
   },
 };
@@ -76,30 +76,30 @@ export const DR_Rule = {
     type: 'string',
     required: false,
   },
-  begin_date: 'string',
-  end_date: 'string',
+  begin_date: 'begin_date',
+  end_date: 'end_date',
   database: {
     type: 'string',
     required: false,
   },
   metric_type: {
-    type: 'string',
+    type: 'metric_type',
     required: false,
   },
   data_type: {
-    type: 'string',
+    type: 'data_type',
     required: false,
   },
   access_method: {
-    type: 'string',
+    type: 'access_method',
     required: false,
   },
   attributes_to_show: {
-    type: 'string',
+    type: 'attributes_to_show',
     required: false,
   },
   granularity: {
-    type: 'string',
+    type: 'granularity',
     required: false,
   },
 };
@@ -110,8 +110,8 @@ export const DR_D2_Rule = View_Rule;
 
 export const TR_Rule = {
   customer_id: 'string',
-  begin_date: 'string',
-  end_date: 'string',
+  begin_date: 'begin_date',
+  end_date: 'end_date',
   platform: {
     type: 'string',
     required: false,
@@ -121,35 +121,35 @@ export const TR_Rule = {
     required: false,
   },
   metric_type: {
-    type: 'string',
+    type: 'metric_type',
     required: false,
   },
   data_type: {
-    type: 'string',
+    type: 'data_type',
     required: false,
   },
   section_type: {
-    type: 'string',
+    type: 'section_type',
     required: false,
   },
   yop: {
-    type: 'string',
+    type: 'yop',
     required: false,
   },
   access_type: {
-    type: 'string',
+    type: 'access_type',
     required: false,
   },
   access_method: {
-    type: 'string',
+    type: 'access_method',
     required: false,
   },
   attributes_to_show: {
-    type: 'string',
+    type: 'attributes_to_show',
     required: false,
   },
   granularity: {
-    type: 'string',
+    type: 'granularity',
     required: false,
   },
 };
@@ -164,8 +164,8 @@ export const IR_Rule = {
     type: 'string',
     required: false,
   },
-  begin_date: 'string',
-  end_date: 'string',
+  begin_date: 'begin_date',
+  end_date: 'end_date',
   item_id: {
     type: 'string',
     required: false,
@@ -175,39 +175,39 @@ export const IR_Rule = {
     required: false,
   },
   metric_type: {
-    type: 'string',
+    type: 'metric_type',
     required: false,
   },
   data_type: {
-    type: 'string',
+    type: 'data_type',
     required: false,
   },
   yop: {
-    type: 'string',
+    type: 'yop',
     required: false,
   },
   access_type: {
-    type: 'string',
+    type: 'access_type',
     required: false,
   },
   access_method: {
-    type: 'string',
+    type: 'access_method',
     required: false,
   },
   attributes_to_show: {
-    type: 'string',
+    type: 'attributes_to_show',
     required: false,
   },
   include_component_details: {
-    type: 'string',
+    type: 'include_component_details',
     required: false,
   },
   include_parent_details: {
-    type: 'string',
+    type: 'include_parent_details',
     required: false,
   },
   granularity: {
-    type: 'string',
+    type: 'granularity',
     required: false,
   },
 };

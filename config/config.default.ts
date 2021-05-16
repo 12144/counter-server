@@ -1,4 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { ErrorHandler } from '../app/error';
 
 export default (appInfo: EggAppInfo) => {
   const config: PowerPartial<EggAppConfig> = {
@@ -6,6 +7,9 @@ export default (appInfo: EggAppInfo) => {
       csrf: {
         enable: false,
       },
+    },
+    onerror: {
+      json: ErrorHandler,
     },
   };
 

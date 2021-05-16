@@ -19,16 +19,9 @@ export default class CounterController extends Controller {
   async getAPIStatus() {
     const { ctx } = this;
     const query = ctx.query;
-    console.log('1');
-    try {
-      ctx.validate(Status_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(Status_Rule, query);
+
     const report = await ctx.service.status.index(query);
 
     ctx.body = {
@@ -41,15 +34,9 @@ export default class CounterController extends Controller {
   async getConsortiumMembers() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(Member_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(Member_Rule, query);
+
     const report = await ctx.service.member.index(query);
 
     ctx.body = {
@@ -62,15 +49,9 @@ export default class CounterController extends Controller {
   async getReports() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(Reports_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(Reports_Rule, query);
+
     const report = await ctx.service.reports.index(query);
 
     ctx.body = {
@@ -83,15 +64,9 @@ export default class CounterController extends Controller {
   async getReportsPR() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(PR_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(PR_Rule, query);
+
     const report = await ctx.service.platformReport.pr(query as any);
 
     ctx.body = {
@@ -104,15 +79,9 @@ export default class CounterController extends Controller {
   async getReportsPR1() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(PR_P1_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(PR_P1_Rule, query);
+
     const report = await ctx.service.platformReport.pr_p1(query as any);
 
     ctx.body = {
@@ -125,15 +94,9 @@ export default class CounterController extends Controller {
   async getReportsDR() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(DR_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(DR_Rule, query);
+
     const report = await ctx.service.databaseReport.dr(query as any);
 
     ctx.body = {
@@ -146,15 +109,9 @@ export default class CounterController extends Controller {
   async getReportsDR1() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(DR_D1_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(DR_D1_Rule, query);
+
     const report = await ctx.service.databaseReport.dr_d1(query as any);
 
     ctx.body = {
@@ -167,15 +124,9 @@ export default class CounterController extends Controller {
   async getReportsDR2() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(DR_D2_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(DR_D2_Rule, query);
+
     const report = await ctx.service.databaseReport.dr_d2(query as any);
 
     ctx.body = {
@@ -188,15 +139,9 @@ export default class CounterController extends Controller {
   async getReportsTR() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(TR_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(TR_Rule, query);
+
     const report = await ctx.service.titleReport.tr(query as any);
 
     ctx.body = {
@@ -209,15 +154,9 @@ export default class CounterController extends Controller {
   async getReportsTRB1() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(TR_B1_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(TR_B1_Rule, query);
+
     const report = await ctx.service.titleReport.tr_b1(query as any);
 
     ctx.body = {
@@ -230,15 +169,9 @@ export default class CounterController extends Controller {
   async getReportsTRB2() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(TR_B2_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(TR_B2_Rule, query);
+
     const report = await ctx.service.titleReport.tr_b2(query as any);
 
     ctx.body = {
@@ -251,15 +184,9 @@ export default class CounterController extends Controller {
   async getReportsTRB3() {
     const { ctx } = this;
     const query = ctx.query;
-    try {
-      ctx.validate(TR_B3_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+
+    ctx.validate(TR_B3_Rule, query);
+
     const report = await ctx.service.titleReport.tr_b3(query as any);
 
     ctx.body = {
@@ -275,15 +202,8 @@ export default class CounterController extends Controller {
     query.include_parent_details = query.include_parent_details || '0';
     query.include_component_details = query.include_component_details || '0';
 
-    try {
-      ctx.validate(IR_Rule, query);
-    } catch (err) {
-      ctx.body = {
-        code: 500,
-        message: err.errors,
-      };
-      return;
-    }
+    ctx.validate(IR_Rule, query);
+
     const report = await ctx.service.itemReport.ir(query as any);
 
     ctx.body = {
