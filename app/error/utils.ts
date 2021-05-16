@@ -116,6 +116,15 @@ export function checkAttributesToShow(_rule:any, value:any) {
 }
 
 export const ExceptionCreator = {
+  Invalid_ReportFilter_Value(filter: string, serverity = Serverity.Warning, data = '') {
+    return {
+      Code: 3060,
+      Serverity: serverity,
+      Message: `Filter ${filter} is invalid`,
+      Data: data,
+      Help_URL: 'https://app.swaggerhub.com/apis/COUNTER/counter-sushi_5_0_api/1.0.0',
+    };
+  },
   Invalid_ReportAttribute_Value(attr: string, serverity = Serverity.Warning, data = '') {
     return {
       Code: 3062,
@@ -125,20 +134,20 @@ export const ExceptionCreator = {
       Help_URL: 'https://app.swaggerhub.com/apis/COUNTER/counter-sushi_5_0_api/1.0.0',
     };
   },
+  Required_ReportFilter_Missing(filter: string, serverity = Serverity.Warning, data = '') {
+    return {
+      Code: 3070,
+      Serverity: serverity,
+      Message: `Filter ${filter} is required.`,
+      Data: data,
+      Help_URL: 'https://app.swaggerhub.com/apis/COUNTER/counter-sushi_5_0_api/1.0.0',
+    };
+  },
   Required_ReportAttribute_Missing(attr: string, serverity = Serverity.Warning, data = '') {
     return {
       Code: 3071,
       Serverity: serverity,
       Message: `Attribute ${attr} is required.`,
-      Data: data,
-      Help_URL: 'https://app.swaggerhub.com/apis/COUNTER/counter-sushi_5_0_api/1.0.0',
-    };
-  },
-  Invalid_ReportFilter_Value(filter: string, serverity = Serverity.Warning, data = '') {
-    return {
-      Code: 3060,
-      Serverity: serverity,
-      Message: `Filter ${filter} is invalid`,
       Data: data,
       Help_URL: 'https://app.swaggerhub.com/apis/COUNTER/counter-sushi_5_0_api/1.0.0',
     };

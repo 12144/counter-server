@@ -25,9 +25,9 @@ export function handleParamsError(err:any) {
       case 'customer_id':
         return ExceptionCreator.Required_ReportAttribute_Missing('customer_id', Serverity.Error);
       case ReportFilters.Begin_Date:
-        return ExceptionCreator.Required_ReportAttribute_Missing(ReportFilters.Begin_Date, Serverity.Error);
+        return ExceptionCreator.Required_ReportFilter_Missing(ReportFilters.Begin_Date, Serverity.Error);
       case ReportFilters.End_Date:
-        return ExceptionCreator.Required_ReportAttribute_Missing(ReportFilters.End_Date, Serverity.Error);
+        return ExceptionCreator.Required_ReportFilter_Missing(ReportFilters.End_Date, Serverity.Error);
       default:
         return err;
     }
